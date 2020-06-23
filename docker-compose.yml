@@ -1,0 +1,47 @@
+version: '3'
+
+services: 
+    # nats:
+    #     container_name: "nats1"
+    #     image: nats:latest
+    #     expose:
+    #         - "4222"       
+    #     ports:
+    #         - "8222:8222"
+    # nats2:
+    #     container_name: "nats2"
+    #     image: nats:latest
+    #     command: "--port 4223 --cluster nats://0.0.0.0:6222 --routes=nats://ruser:T0pS3cr3t@nats:6222"
+    # nats3:
+    #     container_name: "nats3"
+    #     image: nats:latest
+    #     command: "--port 4224 --cluster nats://0.0.0.0:6222 --routes=nats://ruser:T0pS3cr3t@nats:6222"
+    
+    originator:
+      container_name: originator
+      build: 
+        context: ./originator 
+      expose:
+        - 7070
+      ports:
+        - 7070:7070  
+      environment:   
+        NATS_SERVER_ADDR: nats://demo.nats.io  
+        CLIENT_ID: originator 
+        SERVER_PORT: 7070
+  
+
+    saleshandler:
+        container_name: saleshandler
+        build: 
+          context: ./saleshandler
+        # depends_on:
+        #   - nats 
+        environment:  
+          NATS_SERVER_ADDR: nats://demo.nats.io 
+          CLIENT_ID: saleshandler 
+
+networks:
+    default:
+        driver: bridge
+             

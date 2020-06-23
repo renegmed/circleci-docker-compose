@@ -1,0 +1,8 @@
+vervsion: 2
+jobs:
+    build:
+        working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
+        steps:
+            - checkout
+            - run: make up
+            - run: make test
