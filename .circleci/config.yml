@@ -30,7 +30,7 @@ jobs:
             - run:
                 name: Starts creating images and containers
                 command: docker-compose up --build -d
-    Test:
+    test:
         steps:        
             - run:
                 name: Test 
