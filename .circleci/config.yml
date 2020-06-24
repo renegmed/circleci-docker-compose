@@ -26,8 +26,8 @@ jobs:
                 command: docker-compose up --build -d
             - run:
                 name: Containers info
-                name: docker logs originator && docker logs saleshandler 
-                 
+                command: docker logs originator && docker logs saleshandler 
+
             # - run:
             #     name: Set GOPATH
             #     command: export GOPATH="~/go-workspace/"
