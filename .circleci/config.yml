@@ -20,6 +20,9 @@ jobs:
                 name: Starts creating images and containers
                 command: docker-compose up --build -d
             - run:
+                name: Get GOPATH and GOROOT info
+                command: pwd && echo $GOPATH && echo $GOROOT
+            - run:
                 name: Test 
                 command: |
                   make test 
