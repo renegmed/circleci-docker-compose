@@ -77,7 +77,7 @@ func TestOriginator(t *testing.T) {
 			ID      string `json:"id"`
 			Message string `json:"message"`
 		}
-		resp, err := http.Post("http://localhost:7070/salesorder", "application/json", bytes.NewBuffer(jsonData))
+		resp, err := http.Post("http://127.0.0.1:7070/salesorder", "application/json", bytes.NewBuffer(jsonData))
 		if err != nil {
 			log.Println("Error on posting sales order, ", err)
 			t.Fail()
