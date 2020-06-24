@@ -1,7 +1,7 @@
 vervsion: 2
 jobs:
     build: 
-        docker:
+        machine:
           - image: circleci/golang:1.13
 
         working_directory: /go/src/github.com/renegmed/circleci-docker-compose 
@@ -29,13 +29,16 @@ jobs:
                 command: docker logs originator && docker logs saleshandler  
             - run:
                 name: Get GOPATH info
-                command: echo $GOPATH
+                command: echo $GOPATH && export PATH="$PATH:$GOROOT/bin"
+            - run:
+                name: Setup GOROOT
+                command: export GOROOT="/usr/local/go"
             - run: 
                 name: Get GOROOT info
                 command: echo $GOROOT
-            - run:
-                name: Check originator server
-                command: ping -c 5 127.0.0.1
+            # - run:
+            #     name: Check originator server
+            #     command: ping -c 5 127.0.0.1
             - run:
                 name: Test 
                 command: |
