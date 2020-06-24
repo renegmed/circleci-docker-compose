@@ -1,7 +1,7 @@
 vervsion: 2
 jobs:
     build: 
-        machine:
+        docker:
           - image: circleci/golang:1.13
 
         working_directory: /go/src/github.com/renegmed/circleci-docker-compose 
@@ -44,13 +44,7 @@ jobs:
                 command: |
                   make test 
 
-    # test:
-    #     docker:
-    #     steps:        
-    #         - run:
-    #             name: Test 
-    #             command: |
-    #               make test 
+  
 workflows:
     version: 2
     build_and_test:
