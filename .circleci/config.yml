@@ -4,7 +4,7 @@ jobs:
         docker:
           - image: circleci/golang:1.13
 
-        working_directory: /usr/local/go/src
+        working_directory: ~/go-workspace/src
        
         steps:
             - checkout 
@@ -19,6 +19,9 @@ jobs:
             - run:
                 name: Starts creating images and containers
                 command: docker-compose up --build -d
+            - run:
+                name: Set GOPATH
+                command: export GOPATH="~/go-workspace/"
             - run:
                 name: Get GOPATH and GOROOT info
                 command: pwd && echo $GOPATH && echo $GOROOT
