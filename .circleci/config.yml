@@ -26,17 +26,16 @@ jobs:
                 command: docker-compose up --build -d
             - run:
                 name: Containers info
-                command: docker logs originator && docker logs saleshandler 
-
-            # - run:
-            #     name: Set GOPATH
-            #     command: export GOPATH="~/go-workspace/"
+                command: docker logs originator && docker logs saleshandler  
             - run:
                 name: Get GOPATH info
                 command: echo $GOPATH
             - run: 
                 name: Get GOROOT info
                 command: echo $GOROOT
+            - run:
+                name: Check originator server
+                command: ping -c 5 127.0.0.1
             - run:
                 name: Test 
                 command: |
