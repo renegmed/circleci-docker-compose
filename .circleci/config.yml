@@ -25,11 +25,15 @@ jobs:
                 name: Starts creating images and containers
                 command: docker-compose up --build -d
             - run:
-                name: Set GOPATH
-                command: export GOPATH="~/go-workspace/"
+                name: Containers info
+                name: docker logs originator && docker logs saleshandler 
+                 
+            # - run:
+            #     name: Set GOPATH
+            #     command: export GOPATH="~/go-workspace/"
             - run:
                 name: Get GOPATH info
-                command: echo GOPATH
+                command: echo $GOPATH
             - run: 
                 name: Get GOROOT info
                 command: echo $GOROOT

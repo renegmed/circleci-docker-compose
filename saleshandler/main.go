@@ -113,6 +113,8 @@ func subscribeToSalesOrders(conn *Connector, salesOrders *SalesOrders, clientID 
 func main() {
 	salesOrders := SalesOrders{}
 
+	log.Println("====== Sales Order Handler is up now.")
+
 	err := execute(&salesOrders)
 	if err != nil {
 		log.Println(err)
