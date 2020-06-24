@@ -4,13 +4,18 @@ jobs:
         docker:
           - image: circleci/golang:1.13
 
-        working_directory: ~/go-workspace/src
+        working_directory: /go/src/github.com/renegmed/circleci-docker-compose 
        
+        environment:
+            TEST_RESULTS: /tmp/test-results
+
         steps:
             - checkout 
 
             - setup_remote_docker
         
+            - run: mkdir -p $TEST_RESULTS
+
             - run: 
                 name: Install Docker Compose 
                 command: | 
@@ -23,8 +28,11 @@ jobs:
                 name: Set GOPATH
                 command: export GOPATH="~/go-workspace/"
             - run:
-                name: Get GOPATH and GOROOT info
-                command: pwd && echo $GOPATH && echo $GOROOT
+                name: Get GOPATH info
+                command: echo GOPATH
+            - run: 
+                name: Get GOROOT info
+                command: echo $GOROOT
             - run:
                 name: Test 
                 command: |
