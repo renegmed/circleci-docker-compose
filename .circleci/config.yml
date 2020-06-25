@@ -64,5 +64,6 @@ jobs:
             - run:
                 name: Test 
                 command: |
+                    cd /home/circleci/.go_workspace/src/github.com/renegmed/circle-docker-compose
                     make test 
 
