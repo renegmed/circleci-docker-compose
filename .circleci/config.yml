@@ -7,10 +7,10 @@ workflows:
             - build
             - test:
                 requires:
-                  - build
+                    - build
                 filters:
-                  branches:
-                    only: experiment
+                    branches:
+                        only: experiment
 
 jobs:
     build: 
@@ -27,29 +27,32 @@ jobs:
                     sudo mv go /usr/local
                     go version
 
-                - run: 
-                    name: Create work directory, move source code to work directory, then go to work directory 
-                    command: | 
-                      mkdir -p /home/circleci/.go_workspace/src/github.com/renegmed             
-                      mv /home/circleci/project /home/circleci/circle-docker-compose
-                      mv /home/circleci/circle-docker-compose /home/circleci/.go_workspace/src/github.com/renegmed 
+            - run: 
+                name: Create work directory, move source code to work directory, then go to work directory 
+                command: | 
+                    mkdir -p /home/circleci/.go_workspace/src/github.com/renegmed             
+                    mv /home/circleci/project /home/circleci/circle-docker-compose
+                    mv /home/circleci/circle-docker-compose /home/circleci/.go_workspace/src/github.com/renegmed 
 
 
             - run:
                 name: Starts creating images and containers
                 command: |
-                  cd /home/circleci/.go_workspace/src/github.com/renegmed/circle-docker-compose
-                  docker-compose up --build -d
+                    cd /home/circleci/.go_workspace/src/github.com/renegmed/circle-docker-compose
+                    docker-compose up --build -d
 
             - run:
                 name: Containers info
                 command: docker logs originator && docker logs saleshandler  
+            
             - run:
                 name: Get GOPATH info
                 command: echo $GOPATH && export PATH="$PATH:$GOROOT/bin"
+            
             - run:
                 name: Setup GOROOT
                 command: export GOROOT="/usr/local/go"
+            
             - run: 
                 name: Get GOROOT info
                 command: echo $GOROOT
@@ -57,9 +60,9 @@ jobs:
             - run:
                 name: Check originator server
                 command: ping -c 5 127.0.0.1
-                
+
             - run:
                 name: Test 
                 command: |
-                  make test 
+                    make test 
 
