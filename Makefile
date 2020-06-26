@@ -3,4 +3,6 @@ up:
 .PHONY: up
 
 test:
-	SERVER=7070 NATS_SERVER_ADDR=nats://demo.nats.io CLIENT_ID=tester go test integrationtest/*.go 
+	$(MAKE) -C integrationtest test-originator
+	$(MAKE) -C integrationtest test-salesorders
+	$(MAKE) -C integrationtest test-joborders
