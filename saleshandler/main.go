@@ -17,11 +17,14 @@ type SalesItem struct {
 	Name      string  `json:"name"`
 	Qty       float32 `json:"qty"`
 	UnitPrice float32 `json:"unitprice"`
+	Status    string  `json:"status"`
+	Location  string  `json:"location"`
 }
 type SalesOrder struct {
 	SalesOrderID string      `json:"ID"`
 	Amount       float32     `json:"amount"`
 	Item         []SalesItem `json:"items"`
+	Status       string      `json:"status"`
 }
 
 type SalesOrders struct {
@@ -94,7 +97,7 @@ func subscribeToSalesOrders(conn *Connector, salesOrders *SalesOrders, clientID 
 
 		salesOrders.save(salesOrder)
 
-		resp := Response{clientID, "Received sales orders" + salesOrder.SalesOrderID}
+		resp := Response{clientID, "Received sales orders " + salesOrder.SalesOrderID}
 		data, err := json.Marshal(resp)
 		if err == nil {
 			log.Println("Responding to [Process.New.SalesOrder]\n\t", resp)
@@ -102,11 +105,32 @@ func subscribeToSalesOrders(conn *Connector, salesOrders *SalesOrders, clientID 
 		} else {
 			log.Println("Error while marshalling [Process.New.SalesOrder] response", err)
 		}
+
+		// allocate inventory for the sales order
+		// if response, no inventory,
+		//     process new job order
+		// if response, insufficient inventory
+		//     process new job order for insufficient inventory
+
+		// request to process new job order
+
 	})
 
 	conn.nc.Subscribe("All.SalesOrder.List", func(m *nats.Msg) {
 		data, _ := json.Marshal(salesOrders.list())
 		m.Respond(data)
+	})
+
+	conn.nc.Subscribe("SalesOrder.Details", func(m *nats.Msg) {
+		// TODO
+	})
+
+	conn.nc.Subscribe("Process.New.JobOrder", func(m *nats.Msg) {
+		// TODO
+	})
+
+	conn.nc.Subscribe("JobOrder.Details", func(m *nats.Msg) {
+		// TODO
 	})
 }
 

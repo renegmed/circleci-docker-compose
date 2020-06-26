@@ -49,8 +49,6 @@ func salesOrderHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//log.Println("Response to request All.NotStarted.Tasks", string(resp.Data))
-
 		var salesOrders []SalesOrder
 		err = json.Unmarshal(resp.Data, &salesOrders)
 		if err != nil {
@@ -87,10 +85,6 @@ func salesOrderHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func jobOrderHandler(w http.ResponseWriter, r *http.Request) {
-	// TODO
-}
-
 func main() {
 
 	serverPort := os.Getenv("SERVER_PORT")
@@ -113,7 +107,6 @@ func main() {
 
 	http.HandleFunc("/salesorder", salesOrderHandler)
 	http.HandleFunc("/salesorders", salesOrderHandler)
-	http.HandleFunc("/joborder", jobOrderHandler)
 	log.Printf("====== Generator server listening on port %s...", serverPort)
 	if err := http.ListenAndServe(":"+serverPort, nil); err != nil {
 		log.Fatal(err)

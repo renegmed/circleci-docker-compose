@@ -5,13 +5,13 @@ WORKDIR /app
 COPY . .
  
 RUN go mod vendor
-RUN go build -o jobshandler .
+RUN go build -o jobordershandler .
  
 
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 
 WORKDIR /root/ 
-COPY --from=builder /app/jobshandler .
+COPY --from=builder /app/jobordershandler .
  
-ENTRYPOINT ["./jobshandler"]
+ENTRYPOINT ["./jobordershandler"]

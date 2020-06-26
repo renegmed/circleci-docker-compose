@@ -1,1 +1,1 @@
-## Exploring circleci with docker-compose ##
+## Exploring circleci with docker-compose and NATS ##

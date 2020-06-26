@@ -41,6 +41,16 @@ services:
           NATS_SERVER_ADDR: nats://demo.nats.io 
           CLIENT_ID: saleshandler 
 
+
+    joborderhandler:
+      container_name: jobordershandler
+      build: 
+        context: ./jobordershandler
+      # depends_on:
+      #   - nats 
+      environment:  
+        NATS_SERVER_ADDR: nats://demo.nats.io 
+        CLIENT_ID: jobordershandler 
 networks:
     default:
         driver: bridge
