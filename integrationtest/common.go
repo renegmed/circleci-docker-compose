@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"testing"
 
 	nats "github.com/nats-io/nats.go"
 	"github.com/satori/uuid"
@@ -63,4 +64,15 @@ func Connect(clientID, natsServers string) (*Connector, error) {
 	}
 
 	return connector, nil
+}
+
+func ErrorIfNotNil(t *testing.T, err error, s string) {
+	if err != nil {
+		LogAndFail(t, s)
+	}
+}
+
+func LogAndFail(t *testing.T, s string) {
+	t.Log(s)
+	t.Fail()
 }

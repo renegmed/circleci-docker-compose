@@ -41,7 +41,6 @@ services:
           NATS_SERVER_ADDR: nats://demo.nats.io 
           CLIENT_ID: saleshandler 
 
-
     joborderhandler:
       container_name: jobordershandler
       build: 

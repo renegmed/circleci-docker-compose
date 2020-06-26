@@ -16,10 +16,8 @@ func TestNewJobOrder(t *testing.T) {
 	natsServers := os.Getenv("NATS_SERVER_ADDR")
 
 	connector, err := Connect(clientID, natsServers)
-	if err != nil {
-		t.Errorf("Problem connecting to NATS server, %v", err)
-		t.Fail()
-	}
+	ErrorIfNotNil(t, err, fmt.Sprintf("Problem connecting to NATS server, %v", err))
+
 	defer connector.Shutdown()
 
 	t.Run("Add job order and verify saved in job orders handler", func(t *testing.T) {
@@ -42,22 +40,18 @@ func TestNewJobOrder(t *testing.T) {
 		jobOrder.JobOrderID = uuid3
 
 		response, err := postJobOrder(connector.NATS(), jobOrder)
-		if err != nil {
-			t.Logf("Error, job order handler could not post job order id %v", uuid3)
-			t.Fail()
-		}
+		ErrorIfNotNil(t, err, fmt.Sprintf("Error, job order handler could not post job order id %v", uuid3))
 
 		if response.Message != "Received job order "+uuid3 {
-			t.Logf("Error, job order handler could not post job order %s.", uuid3)
-			t.Fail()
+			LogAndFail(t, fmt.Sprintf("Error, job order handler could not post job order %s.", uuid3))
+			// t.Logf("Error, job order handler could not post job order %s.", uuid3)
+			// t.Fail()
 		}
 		// get list of job orders from sales orders handler, regardless of status
 
 		jobOrders, err := listJobOrders(connector.NATS())
-		if err != nil {
-			t.Errorf("%v", err)
-			t.Fail()
-		}
+		ErrorIfNotNil(t, err, fmt.Sprintf("%v", uuid3))
+
 		for _, jobOrder := range jobOrders {
 			if jobOrder.JobOrderID == uuid3 {
 				return
@@ -73,7 +67,6 @@ func listJobOrders(conn *nats.Conn) ([]JobOrder, error) {
 	resp, err := conn.Request("All.JobOrder.List", nil, 500*time.Millisecond)
 	if err != nil {
 		return nil, fmt.Errorf("Error on request 'All.JobOrder.List'")
-
 	}
 
 	if resp == nil {

@@ -15,10 +15,8 @@ func TestNewSalesOrder(t *testing.T) {
 	natsServers := os.Getenv("NATS_SERVER_ADDR")
 
 	connector, err := Connect(clientID, natsServers)
-	if err != nil {
-		t.Errorf("Problem connecting to NATS server, %v", err)
-		t.Fail()
-	}
+	ErrorIfNotNil(t, err, fmt.Sprintf("Problem connecting to NATS server, %v", err))
+
 	defer connector.Shutdown()
 
 	t.Run("Add sales order and verify saved in sales order handler", func(t *testing.T) {
@@ -42,22 +40,16 @@ func TestNewSalesOrder(t *testing.T) {
 		salesOrder.SalesOrderID = uuid3
 
 		response, err := postSalesOrder(connector.NATS(), salesOrder)
-		if err != nil {
-			t.Logf("Error, sales order handler could not post sales order id %v", uuid3)
-			t.Fail()
-		}
+		ErrorIfNotNil(t, err, fmt.Sprintf("Error, sales order handler could not post sales order id %v", uuid3))
 
 		if response.Message != "Received sales orders "+uuid3 {
-			t.Logf("Error, sales order %s could not be posted by sales order handler.", uuid3)
-			t.Fail()
+			LogAndFail(t, fmt.Sprintf("Error, sales order %s could not be posted by sales order handler.", uuid3))
 		}
 		// get list of sales orders from sales orders handler, regardless of status
 
 		salesOrders, err := listSalesOrders(connector.NATS())
-		if err != nil {
-			t.Errorf("%v", err)
-			t.Fail()
-		}
+		ErrorIfNotNil(t, err, fmt.Sprintf("%v", err))
+
 		for _, salesOrder := range salesOrders {
 			if salesOrder.SalesOrderID == uuid3 {
 				return
